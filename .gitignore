@@ -1,0 +1,13 @@
+### Intellij ###
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+### Mac OSX + Windows ###
+.DS_Store
+Thumbs.db
+
+### Node.js
+/node_modules
