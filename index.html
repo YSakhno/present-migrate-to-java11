@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Migration to Java 11</title>
+
+    <meta name="description" content="Slides for the Migration to Java 11 talk">
+    <meta name="author" content="Yuri Sakhno">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/monokai.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        // noinspection ES6ConvertVarToLetConst
+        var link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.type = "text/css";
+        link.href = window.location.search.match(/print-pdf/gi) ? "css/print/pdf.css" : "css/print/paper.css";
+        document.getElementsByTagName("head")[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <style>
+        .epam-footer {
+            display: block;
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            z-index: 20;
+            color: #fff;
+            font-family: "Source Sans Pro", Helvetica, sans-serif;
+            font-size: 14px;
+            letter-spacing: 0.05em;
+        }
+
+        .epam-footer-button {
+            display: inline-block;
+            padding: 14px 10px;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            text-decoration: none;
+            font-weight: 500;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .epam-footer-button em {
+            color: #fff;
+        }
+
+        .epam-footer-button:hover {
+            color: #fff;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .epam-footer-button + .epam-footer-button {
+            margin-left: 10px;
+        }
+
+        @media screen and (max-width: 500px) {
+            body {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .epam-footer {
+                display: flex;
+                position: initial;
+                background: rgba(0, 0, 0, 0.2);
+                align-items: center;
+                justify-content: flex-end;
+                font-size: min(3.8vw, 14px);
+                width: 100%;
+            }
+
+            .epam-footer-button {
+                flex-grow: 1;
+                margin: 0;
+                padding-left: 4px;
+                padding-right: 4px;
+                text-transform: none;
+            }
+
+            .epam-footer-delimiter {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h1>Migration to Java 11</h1>
+                <small>
+                    Yuri Sakhno<br/>
+                    GitHub: <a target="_blank" href="https://github.com/YSakhno/present-migrate-to-java11">YSakhno/present-migrate-to-java11</a>
+                </small>
+            </section>
+            <section>
+                <h2>Some history</h2>
+                <ul>
+                    <li><strong>Java 8 (LTS):</strong> released on March 18, 2014</li>
+                    <li><strong>Java 11 (LTS):</strong> released on September 25, 2018</li>
+                </ul>
+                <div class="fragment">
+                    <p>There were two more releases in-between:</p>
+                    <ul>
+                        <li><strong>Java 9:</strong> released on September 21, 2017</li>
+                        <li><strong>Java 10:</strong> released on March 20, 2018</li>
+                    </ul>
+                </div>
+                <p class="fragment">As you can see, a lot of time passed, and there must be a lot of changes!</p>
+            </section>
+        </div>
+    </div>
+
+    <script src="js/reveal.min.js"></script>
+    <script>
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize({
+            width: 1372,
+            height: 1000,
+            controls: true,
+            progress: true,
+            center: true,
+            hash: true,
+
+            transition: "slide", // none/fade/slide/convex/concave/zoom
+
+            // More info https://github.com/hakimel/reveal.js#dependencies
+            dependencies: [
+                {
+                    src: "plugin/markdown/marked.js", condition: function () {
+                        return !!document.querySelector("[data-markdown]");
+                    }
+                },
+                {
+                    src: "plugin/markdown/markdown.js", condition: function () {
+                        return !!document.querySelector("[data-markdown]");
+                    }
+                },
+                {src: "plugin/highlight/highlight.js", async: true},
+                {src: "plugin/search/search.js", async: true},
+                {src: "plugin/zoom-js/zoom.js", async: true},
+                {src: "plugin/notes/notes.js", async: true}
+            ]
+        });
+    </script>
+
+    <footer class="epam-footer">
+        <a class="epam-footer-button" href="https://epam.com/">&lt;EPAM&gt;</a>
+        <span class="epam-footer-delimiter">|</span>
+        Yuri Sakhno
+    </footer>
+</body>
+</html>
