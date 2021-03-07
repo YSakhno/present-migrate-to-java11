@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/reveal.min.css">
     <link rel="stylesheet" href="css/theme/black.css" id="theme">
+    <link rel="stylesheet" href="css/theme/custom.css?1">
 
     <!-- Theme used for syntax highlighting of code -->
     <link rel="stylesheet" href="lib/css/monokai.css">
@@ -33,73 +34,6 @@
     <!--[if lt IE 9]>
     <script src="lib/js/html5shiv.js"></script>
     <![endif]-->
-
-    <style>
-        .epam-footer {
-            display: block;
-            position: absolute;
-            top: 12px;
-            right: 16px;
-            z-index: 20;
-            color: #fff;
-            font-family: "Source Sans Pro", Helvetica, sans-serif;
-            font-size: 14px;
-            letter-spacing: 0.05em;
-        }
-
-        .epam-footer-button {
-            display: inline-block;
-            padding: 14px 10px;
-            color: rgba(255, 255, 255, 0.7);
-            text-transform: uppercase;
-            text-decoration: none;
-            font-weight: 500;
-            box-sizing: border-box;
-            text-align: center;
-        }
-
-        .epam-footer-button em {
-            color: #fff;
-        }
-
-        .epam-footer-button:hover {
-            color: #fff;
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        .epam-footer-button + .epam-footer-button {
-            margin-left: 10px;
-        }
-
-        @media screen and (max-width: 500px) {
-            body {
-                display: flex;
-                flex-direction: column;
-            }
-
-            .epam-footer {
-                display: flex;
-                position: initial;
-                background: rgba(0, 0, 0, 0.2);
-                align-items: center;
-                justify-content: flex-end;
-                font-size: min(3.8vw, 14px);
-                width: 100%;
-            }
-
-            .epam-footer-button {
-                flex-grow: 1;
-                margin: 0;
-                padding-left: 4px;
-                padding-right: 4px;
-                text-transform: none;
-            }
-
-            .epam-footer-delimiter {
-                display: none;
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -108,12 +42,13 @@
             <section>
                 <h1>Migration to Java 11</h1>
                 <small>
-                    Yuri Sakhno<br/>
-                    GitHub: <a target="_blank" href="https://github.com/YSakhno/present-migrate-to-java11">YSakhno/present-migrate-to-java11</a>
+                    Yuri Sakhno<br>
+                    GitHub: <a href="https://github.com/YSakhno/present-migrate-to-java11"
+                               target="_blank">YSakhno/present-migrate-to-java11</a>
                 </small>
             </section>
             <section>
-                <h2>Some history</h2>
+                <h2>History Context</h2>
                 <ul>
                     <li><strong>Java 8 (LTS):</strong> released on March 18, 2014</li>
                     <li><strong>Java 11 (LTS):</strong> released on September 25, 2018</li>
@@ -125,7 +60,439 @@
                         <li><strong>Java 10:</strong> released on March 20, 2018</li>
                     </ul>
                 </div>
-                <p class="fragment">As you can see, a lot of time passed, and there must be a lot of changes!</p>
+                <p class="fragment">As you can see, a lot of time passed, and there must be a lot of changes&hellip;</p>
+                <p class="fragment larger">And there are!</p>
+
+                <aside class="notes">
+                    <p>Currently (March 2021), LTS of Java 11 is at update 10 (third-party release groups).</p>
+                    <p>The current release of OpenJDK from Oracle is Java 15.</p>
+                </aside>
+            </section>
+            <section>
+                <h2>What's New</h2>
+
+                <section>
+                    <p class="smaller">(only major features and changes most relevant to developers follow)</p>
+                </section>
+
+                <section>
+                    <h3>Java Platform Module System
+                        <span class="jsr">(<a href="https://openjdk.java.net/projects/jigsaw/spec/" target="_blank">JSR
+                            376</a>)</span><br>
+                        <span class="smaller">(a.k.a.Project Jigsaw)</span></h3>
+
+                    <ul>
+                        <li>JDK has been modularized</li>
+                        <li>Developers can create their own modules</li>
+                        <li>If developers opt-in to the module system, they must explicitly specify which other modules
+                            their modules depend on, and which packages are exported</li>
+                        <li>It is not strictly necessary to opt-in to the module system, but accessing private packages
+                            from JDK's modules might be a hurdle (even through reflection)</li>
+                    </ul>
+                    <p>The Java Linker (jlink tool) can be used to assemble and optimize a set of modules and their
+                        dependencies into a custom run-time
+                        <span class="jep">(<a href="https://openjdk.java.net/jeps/282" target="_blank">JEP
+                            282</a>)</span></p>
+
+                    <aside class="notes">
+                        <p>Since modules are not a requirement, this presentation does not address
+                            <em>modularization</em> &mdash; just <em>migration</em>.</p>
+                    </aside>
+                </section>
+                <section>
+                    <h3>Local-Variable Type Inference
+                        <span class="jep">(<a href="https://openjdk.java.net/jeps/286" target="_blank">JEP
+                            286</a>)</span><br>
+                        <span class="smaller">a.k.a the <code>var</code> &quot;keyword&quot;</span></h3>
+
+                    <p>The <code>var</code> &quot;keyword&quot; can be used in place of explicit type specialization for local
+                        variables that have immediate initializer.</p>
+
+                    <pre><code class="lang-java" data-trim>
+                        public String someMethod(int a, double b) {
+                            var c = 2; // Automatically inferred as int
+                            var compute = (a + c) * b; // Inferred as double
+                            var result = new StringBuilder();
+
+                            result.append("Your result is: ");
+                            result.append(compute);
+
+                            return result.toString();
+                        }
+                    </code></pre>
+                    <p>Can also be used in <code>for</code>-loops and try-with-resources statements</p>
+
+                    <aside class="notes">
+                        <p>Cannot be used to infer types of:</p>
+
+                        <ul>
+                            <li>Class variables (fields)
+                                <ul><li>even if it's <strong><code>static final</code></strong></li></ul>
+                            </li>
+                            <li>Arguments of a method</li>
+                            <li>Method return types</li>
+                        </ul>
+                    </aside>
+                </section>
+                <section>
+                    <h3>Compact Strings
+                        <span class="jep">(<a href="https://openjdk.java.net/jeps/254" target="_blank">JEP
+                            254</a>)</span></h3>
+
+                    <ul>
+                        <li>Internal representation of the <code>String</code> class changed from having a
+                            <code>char[]</code> field to <code>byte[]</code> field</li>
+                        <li>When the string contains only characters of the ISO-8859-1 encoding (otherwise known as
+                            Latin-1), they will be stored occupying only 1 byte per character; in all other cases,
+                            the 'usual' 2-byte per character encoding (a.k.a. UTF-16) will be used</li>
+                        <li>Data gathered from many different applications indicated that strings are a major component
+                            of heap usage and, moreover, that most strings contain only Latin-1 characters</li>
+                        <li>This change led to reduction in memory footprint, substantial reduction of GC activity,
+                            but at the same time minor performance regressions in some corner cases</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Application Class-Data Sharing
+                        <span class="jep">(<a href="https://openjdk.java.net/jeps/310" target="_blank">JEP
+                            310</a>)</span></h3>
+
+                    <p>Extension of the
+                        <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/class-data-sharing.html"
+                           target="_blank">commercial CDS feature</a> that Oracle&apos;s JVM has since Java 8.</p>
+                    <p>It allows to reduce:</p>
+                    <ul>
+                        <li>launch times</li>
+                        <li>response time outliers</li>
+                        <li>and (if several JVMs run on the same machine), memory footprint</li>
+                    </ul>
+
+                    <aside class="notes">
+                        <ul>
+                            <li>As long as the JARs used by the application do not change, the loaded class-data
+                                is always the same.</li>
+                            <li>The idea behind AppCDS is to create this data once, dump it into an archive,
+                                and then reuse that in future launches.</li>
+                        </ul>
+                    </aside>
+                </section>
+                <section>
+                    <h3>New Garbage Collector: ZGC
+                        <span class="jep">(<a href="https://openjdk.java.net/jeps/333" target="_blank">JEP
+                            333</a>)</span></h3>
+
+                    <p>Scalable Low-Latency Garbage Collector (Experimental). Designed to meet the following goals:</p>
+                    <ul>
+                        <li>Pause times do not exceed 10 ms</li>
+                        <li>Pause times do not increase with the heap or live-set size</li>
+                        <li>Handle heaps ranging from a few hundred megabytes to multi terabytes in size</li>
+                    </ul>
+
+                    <p class="bugreport"><a href="https://bugs.openjdk.java.net/browse/JDK-8197831"
+                                            target="_blank">JDK-8197831</a></p>
+                </section>
+                <section>
+                    <h3>Launching Single-File Source-Code Programs
+                        <span class="jep">(<a href="https://openjdk.java.net/jeps/330" target="_blank">JEP
+                            330</a>)</span></h3>
+
+                    <p>Having file HelloWorld.java with the following content:</p>
+                    <pre><code class="lang-java" data-trim>
+                        package hello;
+
+                        public class World {
+
+                            public static void main(String[] args) {
+                                System.out.println("Hello World!");
+                            }
+                        }
+                    </code></pre>
+
+                    <p>You can run it using the <code>java</code> application directly:</p>
+                    <pre><code class="console" data-trim>
+                        $ java HelloWorld.java
+                        Hello World!
+                    </code></pre>
+
+                    <p class="bugreport"><a href="https://bugs.openjdk.java.net/browse/JDK-8192920"
+                                            target="_blank">JDK-8192920</a></p>
+                </section>
+                <section>
+                    <h3>Other Features</h3>
+                    <ul>
+                        <li>HTTP/2 Client
+                            <span class="grey">API available in the <code>java.net.http</code> package</span>
+                            <span class="jep">(<a href="https://openjdk.java.net/jeps/321" target="_blank">JEP
+                                321</a>)</span></li>
+                        <li>Support for Unicode 10 <span class="smaller grey">(and Unicode 9)</span>
+                            <span class="jep">(<a href="https://openjdk.java.net/jeps/327" target="_blank">JEP
+                                327</a>)</span></li>
+                        <li>Support for Transport Layer Security (TLS) 1.3
+                            <span class="jep">(<a href="https://openjdk.java.net/jeps/332" target="_blank">JEP
+                                332</a>)</span></li>
+                        <li>ChaCha20 and Poly1305 Cryptographic Algorithms
+                            <span class="jep">(<a href="https://openjdk.java.net/jeps/329" target="_blank">JEP
+                                329</a>)</span></li>
+                        <li>Container Awareness <span class="grey">The JVM can detect that it is running
+                            in a Docker container and will extract container-specific info such as number
+                            of CPUs and total memory.</span></li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Effectively-<code>final</code> variables in try-with-resources</h3>
+
+                    <p>Previously you had to declare new variable(s) for the purpose of using the resource it represents
+                        in the try-with-resources statement, for example:</p>
+                    <pre><code class="lang-java" data-trim data-line-numbers="2-3">
+                        public static Properties loadProperties(String filename) throws IOException {
+                            try (var inputStream = new FileInputStream(new File(filename));
+                                 var reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
+                                final var properties = new Properties();
+                                properties.load(reader);
+                                return properties;
+                            }
+                        }
+                    </code></pre>
+
+                    <div class="fragment">
+                        <p>Now you can simply list the variables:</p>
+                        <pre><code class="lang-java" data-trim data-line-numbers="2-3|4">
+                            public static Properties loadProperties(String filename) throws IOException {
+                                var inputStream = new FileInputStream(filename);
+                                var reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+                                try (inputStream; reader) {
+                                    final var properties = new Properties();
+                                    properties.load(reader);
+                                    return properties;
+                                }
+                            }
+                        </code></pre>
+                    </div>
+
+                    <p class="bugreport"><a href="https://bugs.openjdk.java.net/browse/JDK-7196163"
+                                            target="_blank">JDK-7196163</a></p>
+                </section>
+                <section>
+                    <h3>Other Language Changes</h3>
+
+                    <ul>
+                        <li>Allowed <code>@SafeVargs</code> annotation on <code>private</code> methods <span
+                                class="smaller">(previously it was only allowed on <code>static</code> or
+                            <code>final</code> methods, or on constructors)</span>
+                            <span class="bugreport">(<a href="https://bugs.openjdk.java.net/browse/JDK-7196160"
+                                                        target="_blank">JDK-7196160</a>)</span></li>
+                        <li>Allowed <code>private</code> methods in interfaces
+                            <span class="bugreport">(<a href="https://bugs.openjdk.java.net/browse/JDK-8071453"
+                                                        target="_blank">JDK-8071453</a>)</span></li>
+                        <li>The underscore (<code>_</code>) is no longer allowed as a one-character identifier
+                            <span class="bugreport">(<a href="https://bugs.openjdk.java.net/browse/JDK-8061549"
+                                                        target="_blank">JDK-8061549</a>)</span></li>
+                    </ul>
+                </section>
+            </section>
+            <section>
+                <h2>New APIs</h2>
+
+                <section>
+                    <h3>Variable Handles
+                        <span class="jep">(<a href="https://openjdk.java.net/jeps/193" target="_blank">JEP
+                            193</a>)</span></h3>
+
+                    <p>The new class <code>VarHandle</code> residing in <code>java.lang.invoke</code> provides
+                        equivalents of <code>java.util.concurrent.atomic</code> and <code>sun.misc.Unsafe</code>
+                        operations upon object fields and array elements with similar performance.</p>
+                </section>
+                <section>
+                    <h3>Publish-Subscribe Framework
+                        <span class="jep">(<a href="https://openjdk.java.net/jeps/266" target="_blank">JEP
+                            266</a>)</span></h3>
+
+                    <p>The class <code>java.util.concurrent.Flow</code> provides interfaces that support
+                        the Reactive Streams publish-subscribe framework.</p>
+                    <p>These interfaces support interoperability across a number
+                        of asynchronous systems running on JVMs.</p>
+                </section>
+                <section>
+                    <h3>Convenience Factory Methods for Collections
+                        <span class="jep">(<a href="https://openjdk.java.net/jeps/269" target="_blank">JEP
+                            269</a>)</span></h3>
+
+                    <p>New static factory methods on the<code>List</code>, <code>Set</code>, and <code>Map</code>
+                        interfaces make it simpler to create immutable instances of those collections. For example:</p>
+                    <pre><code class="lang-java" data-trim>
+                        final var numbersList = List.of("one", "two", "three");
+                        final var numbersSet = Set.of("one", "two", "three");
+                        final var numbersMap = Map.of("one", 1, "two", 2, "three", 3);
+                    </code></pre>
+
+                    <p>Can also create empty immutable lists / sets / maps:</p>
+                    <pre><code class="lang-java" data-trim>
+                        final var emptyList = List.&lt;String&gt;of();
+                        final var emptySet = Set.&lt;String&gt;of();
+                        final var emptyMap = Map.&lt;String, String&gt;of();
+                    </code></pre>
+                </section>
+                <section>
+                    <h3>More APIs for Creating Unmodifiable Collections</h3>
+
+                    <ul>
+                        <li>The <code>List.copyOf()</code>, <code>Set.copyOf()</code> and <code>Map.copyOf()</code>
+                            methods create new immutable collection instances from existing instances.</li>
+                        <li>If the source <code>Collection</code> / <code>Map</code> is immutable, calling
+                            <code>copyOf()</code> will generally not create a copy.</li>
+                        <li>New methods <code>toUnmodifiableList()</code>, <code>toUnmodifiableSet()</code>
+                            and <code>toUnmodifiableMap()</code> added to the <code>java.util.stream.Collectors</code>
+                            class. These allow the elements of a <code>Stream</code> to be collected into
+                            an unmodifiable collection.</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>New <code>Optional.stream()</code> method</h3>
+
+                    <p>If a value is present, returns a sequential <code>Stream</code> containing only that value,
+                        otherwise returns an empty <code>Stream</code>.</p>
+                    <p>This method can be used to transform a <code>Stream</code> of optional elements
+                        to a <code>Stream</code> of present value elements:</p>
+                    <pre><code class="lang-java" data-trim>
+                        Stream&lt;Optional&lt;T&gt;&gt; os = ...
+                        Stream&lt;T&gt; s = os.flatMap(Optional::stream)
+                    </code></pre>
+                </section>
+                <section>
+                    <h3>The <code>not()</code> predicate method</h3>
+                    <p>The <code>java.util.function.Predicate</code> interface has the new <code>not()</code> method,
+                        which negates the result of its supplied predicate <span class="grey">(usage example will be
+                            shown on the next slide)</span></p>
+                </section>
+                <section>
+                    <h3>New methods on the <code>String</code> class</h3>
+
+                    <p>The following methods were added: <code>isBlank()</code>, <code>lines()</code>,
+                        <code>strip()</code>, <code>stripLeading()</code>, <code>stripTrailing()</code>
+                        and <code>repeat()</code>. Let's look at the example:</p>
+                    <pre><code class="lang-java" data-trim>
+                        final var multilineString = "This is \n \u2003\r\n    \u2002a Java 11\n\tMigration Guide";
+
+                        multilineString.lines() // Stream of lines extracted from a String,
+                                                // separated by line terminators
+                                .filter(not(String::isBlank)) // isBlank() returns true if string is empty
+                                                              // or contains only white space codepoints
+                                .map(String::strip) // akin to trim(),
+                                                    // but accounts for white space in a Unicode sense
+                                .forEach(System.out::println);
+                    </code></pre>
+                    <p>The above snippet outputs:</p>
+                    <pre><code class="console" data-trim>
+                        This is
+                        a Java 11
+                        Migration Guide
+                    </code></pre>
+                </section>
+                <section>
+                    <h3>New methods on the <code>Files</code> class</h3>
+
+                    <p>With the inclusion of <code>readString()</code> and <code>writeString()</code> methods
+                        and their overloads, it is easier to read and write text files:</p>
+                    <pre><code class="lang-java" data-trim>
+                        final String fileAsText = Files.readString("readme.txt");
+                    </code></pre>
+                </section>
+            </section>
+            <section>
+                <h2>Removed Java EE and CORBA Modules
+                    <span class="jep">(<a href="https://openjdk.java.net/jeps/320" target="_blank">JEP
+                        320</a>)</span></h2>
+                <p>The following modules have been removed from the JDK 11:</p>
+                <ul>
+                    <li><code>java.xml.ws</code> <span class="grey">(JAX-WS, plus the related technologies SAAJ
+                        and Web Services Metadata)</span></li>
+                    <li><code>java.xml.bind</code> <span class="grey">(JAXB)</span></li>
+                    <li><code>java.activation</code> <span class="grey">(JAF)</span></li>
+                    <li><code>java.xml.ws.annotation</code> <span class="grey">(Common Annotations)</span></li>
+                    <li><code>java.corba</code> <span class="grey">(CORBA)</span></li>
+                    <li><code>java.transaction</code> <span class="grey">(JTA)</span></li>
+                    <li><code>java.se.ee</code> <span class="grey">(aggregator module for the 6 modules above)</span></li>
+                    <li><code>jdk.xml.ws</code> <span class="grey">(tools for JAX-WS)</span></li>
+                    <li><code>jdk.xml.bind</code> <span class="grey">(tools for JAXB)</span></li>
+                </ul>
+                <p>If you need the classes from these modules / packages in your applications,
+                    you'll need to explicitly include the external dependencies that implement them. Details later.</p>
+            </section>
+            <section>
+                <h2>Upgrading to Java 11</h2>
+                
+                <section></section>
+                
+                <section>
+                    <p>Download and install the build of Java 11 OpenJDK.</p>
+                    <p>Here are sample flavors with corresponding links:</p>
+                    <ul>
+                        <li>AdoptOpenJDK: <a href="https://adoptopenjdk.net/"
+                                             target="_blank">https://adoptopenjdk.net/</a></li>
+                        <li>Azul Zulu Community:
+                            <a href="https://www.azul.com/downloads/zulu-community"
+                               target="_blank">https://www.azul.com/<i>downloads/zulu-community</i></a></li>
+                        <li>Amazon Corretto 11:
+                            <a href="https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html"
+                               target="_blank">https://docs.aws.amazon.com/<i>corretto/latest/corretto-11-ug/downloads-list.html</i></a></li>
+                        <li>BellSoft Liberica JDK:
+                            <a href="https://bell-sw.com/pages/downloads/#/java-11-lts"
+                               target="_blank">https://bell-sw.com/<i>pages/downloads/</i></a></li>
+                        <li>SAP SapMachine: <a href="https://sap.github.io/SapMachine/"
+                                               target="_blank">https://sap.github.io/<i>SapMachine/</i></a></li>
+                    </ul>
+                    <p>IntelliJ IDEA also supports automatic JDK download via its<br><b>Project Settings</b> &gt;
+                        <b>Platform Settings</b> &gt; <b>SDKs</b> configuration.</p>
+                    <p>There are Docker images with JDKs pre-installed,<br>e.g. <code>adoptopenjdk/openjdk11</code></p>
+                </section>
+                <section>
+                    <p>Update all the things: your IDE, your build tool, its plugins,<br>and your project dependencies
+                        <span class="smaller grey">(the latter addressed on the next slide to some extent)</span>.</p>
+                    <p>Here are the recommended <i>minimum</i> versions for a few tools:</p>
+                    <ul>
+                        <li>IntelliJ IDEA: <b>2018.2</b></li>
+                        <li>Eclipse: Photon <b>4.9RC2</b> <span class="grey">with Java 11 plugin</span></li>
+                        <li>Maven: <b>3.5.0</b>
+                            <ul>
+                                <li>compiler plugin: <b>3.8.0</b></li>
+                                <li>surefire and failsafe: <b>2.22.0</b></li>
+                            </ul>
+                        </li>
+                        <li>Gradle: <b>5.0</b></li>
+                    </ul>
+                    <p>By this time <span class="smaller">(March 2021)</span>, even these versions are outdated,<br>
+                        so it is probably better to just upgrade to the latest available.</p>
+                </section>
+                <section>
+                    <p>When project dependencies are concerned, one major thing that comes to mind is anything
+                        that operates on the bytecode, like:</p>
+                    <ul>
+                        <li>ASM (7.0)</li>
+                        <li>Byte Buddy (1.9.0)</li>
+                        <li>cglib (3.2.8)</li>
+                        <li>Javassist (3.23.1-GA)</li>
+                    </ul>
+                    <p>Additionally, the dependencies that use the ones above, like:</p>
+                    <ul>
+                        <li>Spring (5.1)</li>
+                        <li>Hibernate (5.3.3.Final)</li>
+                        <li>Mockito (2.20.0)</li>
+                        <li>many, many more&hellip;</li>
+                    </ul>
+                </section>
+                <section>
+                    <p>Also, there are dependencies that cannot be upgraded,<br>
+                        because they do not receive support anymore, such as:</p>
+                    <ul>
+                        <li>FindBugs (use SpotBugs instead)</li>
+                        <li>Log4j 1 (migrate to Log4J 2)</li>
+                        <li>Cobertura (use JaCoCo)</li>
+                    </ul>
+
+                    <aside class="notes">
+                        <p>Only if the problem lies in your own code or such updates/replacements don't help
+                            or aren't possible, does it make sense to dive into the actual problem.</p>
+                    </aside>
+                </section>
             </section>
         </div>
     </div>
@@ -134,7 +501,7 @@
     <script>
         // More info https://github.com/hakimel/reveal.js#configuration
         Reveal.initialize({
-            width: 1372,
+            width: 1440,
             height: 1000,
             controls: true,
             progress: true,
@@ -163,10 +530,10 @@
         });
     </script>
 
-    <footer class="epam-footer">
-        <a class="epam-footer-button" href="https://epam.com/">&lt;EPAM&gt;</a>
-        <span class="epam-footer-delimiter">|</span>
-        Yuri Sakhno
+    <footer class="epam">
+        <a class="button" href="https://epam.com/"
+           target="_blank"><img class="logo" src="img/logo_white-blue.svg" alt="EPAM"></a>
+        <span class="delimiter">|</span> Yuri Sakhno
     </footer>
 </body>
 </html>
