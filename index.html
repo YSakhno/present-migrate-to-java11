@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/reveal.min.css">
     <link rel="stylesheet" href="css/theme/black.css" id="theme">
-    <link rel="stylesheet" href="css/theme/custom.css?1">
+    <link rel="stylesheet" href="css/theme/custom.css?2">
 
     <!-- Theme used for syntax highlighting of code -->
     <link rel="stylesheet" href="lib/css/monokai.css">
@@ -41,18 +41,22 @@
         <div class="slides">
             <section>
                 <h1>Migration to Java 11</h1>
+
                 <small>
                     Yuri Sakhno<br>
                     GitHub: <a href="https://github.com/YSakhno/present-migrate-to-java11"
                                target="_blank">YSakhno/present-migrate-to-java11</a>
                 </small>
             </section>
+
             <section>
-                <h2>History Context</h2>
+                <h2>Historical Context</h2>
+
                 <ul>
                     <li><strong>Java 8 (LTS):</strong> released on March 18, 2014</li>
                     <li><strong>Java 11 (LTS):</strong> released on September 25, 2018</li>
                 </ul>
+
                 <div class="fragment">
                     <p>There were two more releases in-between:</p>
                     <ul>
@@ -60,6 +64,7 @@
                         <li><strong>Java 10:</strong> released on March 20, 2018</li>
                     </ul>
                 </div>
+
                 <p class="fragment">As you can see, a lot of time passed, and there must be a lot of changes&hellip;</p>
                 <p class="fragment larger">And there are!</p>
 
@@ -68,6 +73,7 @@
                     <p>The current release of OpenJDK from Oracle is Java 15.</p>
                 </aside>
             </section>
+
             <section>
                 <h2>What's New</h2>
 
@@ -89,6 +95,7 @@
                         <li>It is not strictly necessary to opt-in to the module system, but accessing private packages
                             from JDK's modules might be a hurdle (even through reflection)</li>
                     </ul>
+
                     <p>The Java Linker (jlink tool) can be used to assemble and optimize a set of modules and their
                         dependencies into a custom run-time
                         <span class="jep">(<a href="https://openjdk.java.net/jeps/282" target="_blank">JEP
@@ -99,6 +106,7 @@
                             <em>modularization</em> &mdash; just <em>migration</em>.</p>
                     </aside>
                 </section>
+
                 <section>
                     <h3>Local-Variable Type Inference
                         <span class="jep">(<a href="https://openjdk.java.net/jeps/286" target="_blank">JEP
@@ -124,7 +132,6 @@
 
                     <aside class="notes">
                         <p>Cannot be used to infer types of:</p>
-
                         <ul>
                             <li>Class variables (fields)
                                 <ul><li>even if it's <strong><code>static final</code></strong></li></ul>
@@ -134,6 +141,7 @@
                         </ul>
                     </aside>
                 </section>
+
                 <section>
                     <h3>Compact Strings
                         <span class="jep">(<a href="https://openjdk.java.net/jeps/254" target="_blank">JEP
@@ -151,6 +159,7 @@
                             but at the same time minor performance regressions in some corner cases</li>
                     </ul>
                 </section>
+
                 <section>
                     <h3>Application Class-Data Sharing
                         <span class="jep">(<a href="https://openjdk.java.net/jeps/310" target="_blank">JEP
@@ -175,6 +184,7 @@
                         </ul>
                     </aside>
                 </section>
+
                 <section>
                     <h3>New Garbage Collector: ZGC
                         <span class="jep">(<a href="https://openjdk.java.net/jeps/333" target="_blank">JEP
@@ -190,6 +200,7 @@
                     <p class="bugreport"><a href="https://bugs.openjdk.java.net/browse/JDK-8197831"
                                             target="_blank">JDK-8197831</a></p>
                 </section>
+
                 <section>
                     <h3>Launching Single-File Source-Code Programs
                         <span class="jep">(<a href="https://openjdk.java.net/jeps/330" target="_blank">JEP
@@ -216,8 +227,10 @@
                     <p class="bugreport"><a href="https://bugs.openjdk.java.net/browse/JDK-8192920"
                                             target="_blank">JDK-8192920</a></p>
                 </section>
+
                 <section>
                     <h3>Other Features</h3>
+
                     <ul>
                         <li>HTTP/2 Client
                             <span class="grey">API available in the <code>java.net.http</code> package</span>
@@ -237,6 +250,7 @@
                             of CPUs and total memory.</span></li>
                     </ul>
                 </section>
+
                 <section>
                     <h3>Effectively-<code>final</code> variables in try-with-resources</h3>
 
@@ -271,6 +285,7 @@
                     <p class="bugreport"><a href="https://bugs.openjdk.java.net/browse/JDK-7196163"
                                             target="_blank">JDK-7196163</a></p>
                 </section>
+
                 <section>
                     <h3>Other Language Changes</h3>
 
@@ -289,6 +304,7 @@
                     </ul>
                 </section>
             </section>
+
             <section>
                 <h2>New APIs</h2>
 
@@ -301,6 +317,7 @@
                         equivalents of <code>java.util.concurrent.atomic</code> and <code>sun.misc.Unsafe</code>
                         operations upon object fields and array elements with similar performance.</p>
                 </section>
+
                 <section>
                     <h3>Publish-Subscribe Framework
                         <span class="jep">(<a href="https://openjdk.java.net/jeps/266" target="_blank">JEP
@@ -311,6 +328,7 @@
                     <p>These interfaces support interoperability across a number
                         of asynchronous systems running on JVMs.</p>
                 </section>
+
                 <section>
                     <h3>Convenience Factory Methods for Collections
                         <span class="jep">(<a href="https://openjdk.java.net/jeps/269" target="_blank">JEP
@@ -331,6 +349,7 @@
                         final var emptyMap = Map.&lt;String, String&gt;of();
                     </code></pre>
                 </section>
+
                 <section>
                     <h3>More APIs for Creating Unmodifiable Collections</h3>
 
@@ -345,6 +364,7 @@
                             an unmodifiable collection.</li>
                     </ul>
                 </section>
+
                 <section>
                     <h3>New <code>Optional.stream()</code> method</h3>
 
@@ -357,12 +377,14 @@
                         Stream&lt;T&gt; s = os.flatMap(Optional::stream)
                     </code></pre>
                 </section>
+
                 <section>
                     <h3>The <code>not()</code> predicate method</h3>
                     <p>The <code>java.util.function.Predicate</code> interface has the new <code>not()</code> method,
                         which negates the result of its supplied predicate <span class="grey">(usage example will be
                             shown on the next slide)</span></p>
                 </section>
+
                 <section>
                     <h3>New methods on the <code>String</code> class</h3>
 
@@ -380,6 +402,7 @@
                                                     // but accounts for white space in a Unicode sense
                                 .forEach(System.out::println);
                     </code></pre>
+
                     <p>The above snippet outputs:</p>
                     <pre><code class="console" data-trim>
                         This is
@@ -387,6 +410,7 @@
                         Migration Guide
                     </code></pre>
                 </section>
+
                 <section>
                     <h3>New methods on the <code>Files</code> class</h3>
 
@@ -397,10 +421,12 @@
                     </code></pre>
                 </section>
             </section>
+
             <section>
                 <h2>Removed Java EE and CORBA Modules
                     <span class="jep">(<a href="https://openjdk.java.net/jeps/320" target="_blank">JEP
                         320</a>)</span></h2>
+
                 <p>The following modules have been removed from the JDK 11:</p>
                 <ul>
                     <li><code>java.xml.ws</code> <span class="grey">(JAX-WS, plus the related technologies SAAJ
@@ -417,11 +443,13 @@
                 <p>If you need the classes from these modules / packages in your applications,
                     you'll need to explicitly include the external dependencies that implement them. Details later.</p>
             </section>
+
             <section>
                 <h2>Upgrading to Java 11</h2>
-                
+                <h3>Preparation</h3>
+
                 <section></section>
-                
+
                 <section>
                     <p>Download and install the build of Java 11 OpenJDK.</p>
                     <p>Here are sample flavors with corresponding links:</p>
@@ -440,10 +468,12 @@
                         <li>SAP SapMachine: <a href="https://sap.github.io/SapMachine/"
                                                target="_blank">https://sap.github.io/<i>SapMachine/</i></a></li>
                     </ul>
+
                     <p>IntelliJ IDEA also supports automatic JDK download via its<br><b>Project Settings</b> &gt;
                         <b>Platform Settings</b> &gt; <b>SDKs</b> configuration.</p>
                     <p>There are Docker images with JDKs pre-installed,<br>e.g. <code>adoptopenjdk/openjdk11</code></p>
                 </section>
+
                 <section>
                     <p>Update all the things: your IDE, your build tool, its plugins,<br>and your project dependencies
                         <span class="smaller grey">(the latter addressed on the next slide to some extent)</span>.</p>
@@ -459,9 +489,11 @@
                         </li>
                         <li>Gradle: <b>5.0</b></li>
                     </ul>
+
                     <p>By this time <span class="smaller">(March 2021)</span>, even these versions are outdated,<br>
                         so it is probably better to just upgrade to the latest available.</p>
                 </section>
+
                 <section>
                     <p>When project dependencies are concerned, one major thing that comes to mind is anything
                         that operates on the bytecode, like:</p>
@@ -471,6 +503,7 @@
                         <li>cglib (3.2.8)</li>
                         <li>Javassist (3.23.1-GA)</li>
                     </ul>
+
                     <p>Additionally, the dependencies that use the ones above, like:</p>
                     <ul>
                         <li>Spring (5.1)</li>
@@ -479,6 +512,7 @@
                         <li>many, many more&hellip;</li>
                     </ul>
                 </section>
+
                 <section>
                     <p>Also, there are dependencies that cannot be upgraded,<br>
                         because they do not receive support anymore, such as:</p>
@@ -494,6 +528,244 @@
                     </aside>
                 </section>
             </section>
+
+            <section>
+                <h2>Upgrading to Java 11</h2>
+
+                <section>
+                    <h3>Troubleshooting</h3>
+                </section>
+
+                <section>
+                    <h3>Troubleshooting &quot;missing classes&quot;</h3>
+
+                    <p>Since a lot of Java EE related modules were removed,
+                        you might be getting a compilation errors similar to the following one:</p>
+                    <pre><code class="console" data-trim>
+                        error: package javax.xml.bind does not exist
+                        import javax.xml.bind.JAXBException;
+                                             ^
+                    </code></pre>
+
+                    <p class="fragment" data-fragment-index="1">It is also possible to get an exception at run-time:</p>
+                    <pre class="fragment" data-fragment-index="1"><code class="console" data-trim>
+                        Exception in thread "main" java.lang.NoClassDefFoundError: javax/xml/bind/JAXBException
+                            at monitor.Main.main(Main.java:27)
+                        Caused by: java.lang.ClassNotFoundException: javax.xml.bind.JAXBException
+                            at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:582)
+                            at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:185)
+                            at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:496)
+                            ... 1 more
+                    </code></pre>
+
+                    <aside class="notes">
+                        <p>The dependency on <code>JAXBException</code> class is just an example, it is possible
+                            to receive the &quot;missing class&quot; error for any class from the removed modules.</p>
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Troubleshooting &quot;missing classes&quot;<br><span class="smaller">(continued)</span></h3>
+
+                    <p>To resolve the &quot;missing class&quot; errors from the previous slide, add third-party dependencies
+                        (or use the reference ones) that contain the classes you need.</p>
+                    <p>Here are Maven coordinates of some such dependencies
+                        <span class="grey">(without versions)</span>:</p>
+                    <ul>
+                        <li>JAF &mdash; <a href="https://mvnrepository.com/artifact/com.sun.activation/javax.activation"
+                                           target="_blank"><code>com.sun.activation:javax.activation</code></a></li>
+                        <li>CORBA: there is currently no artifact for this</li>
+                        <li>JTA &mdash;
+                            <a href="https://mvnrepository.com/artifact/javax.transaction/javax.transaction-api"
+                               target="_blank"><code>javax.transaction:javax.transaction-api</code></a></li>
+                        <li>JAXB &mdash; <a href="https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl"
+                                            target="_blank"><code>com.sun.xml.bind:jaxb-impl</code></a></li>
+                        <li>JAX-WS &mdash; <a href="https://mvnrepository.com/artifact/com.sun.xml.ws/jaxws-ri"
+                                              target="_blank"><code>com.sun.xml.ws:jaxws-ri</code></a></li>
+                        <li>Commons Annotation &mdash;
+                            <a href="https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api"
+                               target="_blank"><code>javax.annotation:javax.annotation-api</code></a></li>
+                    </ul>
+
+                    <p>See also this StackOverflow answer:<br>
+                        <a href="https://stackoverflow.com/a/48204154/2525313"
+                           target="_blank"><i>https://stackoverflow.com/</i>a/48204154/2525313</a></p>
+                </section>
+
+                <section>
+                    <h3>Troubleshooting Illegal Access To Internal APIs</h3>
+
+                    <p>To promote strong encapsulation, Module System of Java 9 allows<br>
+                        the library developers to mark certain parts of their code as &quot;internal&quot;.</p>
+                    <p>Consumers of such libraries won't be able to import classes<br>
+                        from such packages into their source code:</p>
+                    <pre><code class="console" data-trim>
+                        error: package com.sun.imageio.plugins.jpeg is not visible
+                        import com.sun.imageio.plugins.jpeg.JPEG;
+                                                      ^
+                          (package com.sun.imageio.plugins.jpeg is declared
+                          in module java.desktop, which does not export it)
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>Troubleshooting Illegal Access To Internal APIs<br><span class="smaller">(continued)</span></h3>
+
+                    <p>To allow for smoother transition from Java 8 to Java 11,<br>
+                        this limitation is relaxed to some extent for reflective access.</p>
+                    <p>Instead of the &quot;hard&quot; error, JVM outputs a warning that looks like:</p>
+                    <pre><code class="console" data-trim>
+                        WARNING: An illegal reflective access operation has occurred
+                        WARNING: Illegal reflective access by org.powermock.reflect.internal.WhiteboxImpl
+                            (file: powermock-reflect-2.0.2.jar) to method java.lang.Object.clone()
+                        WARNING: Please consider reporting this to the maintainers of org.powermock.reflect.internal.WhiteboxImpl
+                        WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+                        WARNING: All illegal access operations will be denied in a future release
+                    </code></pre>
+
+                    <p>Most notably, the above warning can be seen when running tests<br>
+                        <span class="smaller grey">(if certain libraries, such as PowerMock are used)</span>.</p>
+                    <p class="smaller">To find out more about why this warning occurs and what it means, see<br>
+                        <a href="https://stackoverflow.com/questions/50251798/what-is-an-illegal-reflective-access"
+                           target="_blank"><i>https://stackoverflow.com/</i>questions/50251798/what-is-an-illegal-reflective-access</a></p>
+
+                    <aside class="notes">
+                        <p>The message is (mostly) harmless, but as pointed out in the warning message,
+                            such operations might be denied in a future Java release.</p>
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Troubleshooting Illegal Access To Internal APIs<br>
+                        <span class="smaller">(continued 2)</span></h3>
+
+                    <p>There are several approaches to turning the warning off:</p>
+                    <ol>
+                        <li>Rewrite your code to not use illegal access<br><span class="grey">(or do not rely
+                            on a 3<sup>rd</sup>-party library that uses such access)</span></li>
+                        <li>Open the internal package</li>
+                        <li>The &quot;hacky&quot; way <span class="smaller grey">(does not
+                            actually solve anything apart from hiding the message)</span></li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h3>Troubleshooting Illegal Access To Internal APIs:<br>Opening the internal package</h3>
+
+                    <p>You can open a package of a module for deep reflection by using
+                        the <code>--add-opens</code> command line option:</p>
+                    <pre><code class="console" data-trim  data-line-numbers="2">
+                        $ java \
+                                --add-opens=java.base/java.lang=application-module \
+                                -jar application.jar
+                    </code></pre>
+
+                    <p>The above command opens classes of package <code>java.lang</code> of module
+                        <code>java.base</code> to all access from module <code>application-module</code>.</p>
+                    <p class="fragment" data-fragment-index="1">If your code is not modularized, you can use special
+                        module<br>name <code>ALL-UNNAMED</code>, so the command above would become:</p>
+                    <pre class="fragment" data-fragment-index="1"><code class="console" data-trim data-line-numbers="2">
+                        $ java \
+                                --add-opens=java.base/java.lang=ALL-UNNAMED \
+                                -jar application.jar
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>Troubleshooting Illegal Access To Internal APIs:<br>
+                        The &quot;hacky&quot; way <span class="smaller">(several,actually)</span></h3>
+
+                    <p>Since the warning appears on the <code>stderr</code>,<br>
+                        you can simply redirect all such output to nowhere at the start of your program:</p>
+                    <pre><code class="lang-java" data-trim>
+                        System.err.close();
+                        System.setErr(System.out);
+                    </code></pre>
+
+                    <p>Another approach is to reset internal <code>IllegalAccessLogger</code><br>
+                        with the help of <em>Unsafe</em> API.</p>
+                    <pre><code class="lang-java" data-trim>
+                        public static void disableIllegalAccessWarning() {
+                            try {
+                                Field theUnsafe = Unsafe.class.getDeclaredField(&quot;theUnsafe&quot;);
+                                theUnsafe.setAccessible(true);
+                                Unsafe u = (Unsafe) theUnsafe.get(null);
+
+                                Class cls = Class.forName(&quot;jdk.internal.module.IllegalAccessLogger&quot;);
+                                Field logger = cls.getDeclaredField(&quot;logger&quot;);
+                                u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
+                            } catch (Exception ignored) {}
+                        }
+                    </code></pre>
+
+                    <p class="smaller bugreport">Credit:
+                        <a href="https://stackoverflow.com/a/46458447/1345053"
+                           target="_blank"><i>https://stackoverflow.com/</i>a/46458447/1345053</a></p>
+                </section>
+
+                <section>
+                    <h3>Troubleshooting Removed APIs That Were Deprecated</h3>
+
+                    <p>Some methods or even entire classes had been deprecated for quite some time,
+                        and then finally removed in Java 11. Here are some examples:</p>
+                    <ul>
+                        <li><code>sun.misc.Base64</code>
+                            <span class="grey">(but you can use <code>java.util.Base64</code> instead)</span></li>
+                        <li><code>com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel</code>
+                            <span class="grey">(<code>javax.swing.plaf.nimbus.NimbusLookAndFeel</code>
+                                can be used)</span></li>
+                        <li>some others too, but I doubt they are <em>that</em> well known to mention here</li>
+                    </ul>
+                </section>
+            </section>
+
+            <section>
+                <h2>Targeting Older Versions of Java</h2>
+
+                <section>
+                    <p>It is still possible to compile for Java 1.6, 1.7, and 1.8 using the Java 11 JDK.</p>
+                    <p>Be sure to specify the <code>maven.compiler.release</code> property when using Maven.<br>
+                        For example, the following will target the Java 1.6 platform:</p>
+                    <pre><code class="lang-xml" data-trim>
+                        &lt;maven.compiler.release&gt;6&lt;/maven.compiler.release&gt;
+                    </code></pre>
+
+                    <p>Gradle has similar settings
+                        <span class="grey">(be sure to specify version as a string)</span>:</p>
+                    <pre><code class="lang-gradle" data-trim>
+                        // In the root of build.gradle
+                        sourceCompatibility = "1.8"
+                        targetCompatibility = "1.8"
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>Word(s) of caution</h3>
+
+                    <ul>
+                        <li>There is no way to use Java language features unsupported by older Java platform versions
+                            <span class="grey">(it is never late to start using
+                                <a href="https://kotlinlang.org/" target="_blank">Kotlin</a> though)</span></li>
+                        <li>Just because you use JDK 11 for compilation, does not mean that you can use APIs that
+                            were added after the version of the platform you are targeting<br>
+                            <span class="grey">(For example, there will be no <code>Stream</code>s
+                                if you target 1.6 or 1.7)</span></li>
+                        <li>The dependencies that you use must also be compatible<br>
+                            with the version of the platform you're targeting<br>
+                            <span class="grey">(well, obviously,
+                                but this is also true if you develop using any version of Java)</span></li>
+                    </ul>
+                </section>
+            </section>
+
+            <section>
+                <h1>Questions</h1>
+
+                <p>Scan the QR-code to get the GitHub repo link</p>
+                <img class="r-fit-text" src="img/github-repo-qr.svg" alt="QR code for GitHub repository">
+                <p><a href="https://github.com/YSakhno/present-migrate-to-java11"
+                      target="_blank"><i>https://github.com/</i>YSakhno/present-migrate-to-java11</a></p>
+            </section>
         </div>
     </div>
 
@@ -502,7 +774,7 @@
         // More info https://github.com/hakimel/reveal.js#configuration
         Reveal.initialize({
             width: 1440,
-            height: 1000,
+            height: 1050,
             controls: true,
             progress: true,
             center: true,

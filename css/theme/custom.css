@@ -18,6 +18,11 @@ a i {
     opacity: 0.5;
 }
 
+a code {
+    color: #fff;
+    text-decoration: underline;
+}
+
 .reveal .jsr, .reveal .jep, .reveal .bugreport {
     font-size: 75%;
 }
